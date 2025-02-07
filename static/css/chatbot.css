@@ -1,0 +1,207 @@
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(to bottom, #87ceeb, #f0f8ff);
+    background-image: url('../images/pngwing.com (2).png'); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .robot {
+    position: relative;
+    animation: float 3s ease-in-out infinite;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(-10px);
+    }
+    50% {
+      transform: translateY(10px);
+    }
+  }
+
+  .head {
+    width: 120px;
+    height: 90px;
+    background: #fff;
+    border-radius: 50px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    position: relative;
+  }
+
+  .face {
+    width: 80px;
+    height: 50px;
+    background: #333;
+    border-radius: 25px;
+    position: absolute;
+    top: 20px;
+    left: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+  }
+
+  .eyes {
+    display: flex;
+    justify-content: space-between;
+    width: 50px;
+    margin-left: 15px;
+  }
+
+  .eyes .eye {
+    width: 15px;
+    height: 15px;
+    background: #00f;
+    border-radius: 50%;
+    animation: blink 5s infinite;
+  }
+
+  @keyframes blink {
+    0%, 90%, 100% {
+      transform: scaleY(1);
+    }
+    95% {
+      transform: scaleY(0.1);
+    }
+  }
+
+  .body {
+    width: 100px;
+    height: 80px;
+    background: #fff;
+    border-radius: 50px 50px 40px 40px;
+    top: 70px;
+    left: 10px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  .arms {
+    position: absolute;
+    top: 80px;
+    display: flex;
+    justify-content: space-between;
+    width: 160px;
+  }
+
+  .arm {
+    width: 40px;
+    height: 20px;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    animation: wave 3s ease-in-out infinite;
+  }
+
+  .arm.left {
+    transform: rotate(-30deg);
+    animation-delay: 0.2s;
+  }
+
+  .arm.right {
+    transform: rotate(30deg);
+    animation-delay: 0.4s;
+  }
+
+  @keyframes wave {
+    0%, 100% {
+      transform: rotate(-30deg);
+    }
+    50% {
+      transform: rotate(-10deg);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .robot {
+      transform: scale(0.8);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .robot {
+      transform: scale(0.6);
+    }
+  }
+
+  .input-bar {
+    position: fixed;
+    bottom: 10px;
+    left: 0;
+    width: 100%;
+    padding: 0 10px;
+    box-sizing: border-box;
+    z-index: 10;
+    display: flex;
+    justify-content: center; /* Centers the form horizontally */
+  }
+  
+  .input-bar__input {
+    width: 80%; /* Adjust width for responsiveness */
+    max-width: 600px;
+    padding: 12px;
+    font-size: 16px;
+    border: none;
+    border-bottom: 2px solid #ccc;
+    border-radius: 25px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    color: #fff;
+    outline: none;
+    transition: all 0.3s ease;
+  }
+  
+  .input-bar__input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+    font-style: italic;
+  }
+  
+  .input-bar__input:focus {
+    border-bottom: 2px solid #007BFF;
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+  }
+  
+  .input-bar__input:not(:placeholder-shown) {
+    border-bottom: 2px solid #007BFF;
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  .chat-container {
+    position: fixed;
+    top: 10%; /* Adjust the top margin for spacing */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%; /* Adjust the width */
+    max-width: 600px; /* Set a maximum width for larger screens */
+    height: auto; /* Automatically adjust height based on content */
+    max-height: 80vh; /* Set a maximum height with scrolling */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    overflow-y: auto; /* Allow scrolling for overflowing content */
+    padding: 20px;
+    z-index: 5;
+    box-sizing: border-box;
+    background: transparent; /* Semi-transparent white background */
+    border-radius: 10px; /* Rounded corners */
+}
+
+  
+  .chat-message {
+    background: transparent; /* Semi-transparent white background for messages */
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 8px;
+    width: 80%; /* Adjust message width */
+    max-width: 600px;
+  }

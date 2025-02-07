@@ -1,0 +1,209 @@
+{% extends "base.html" %}
+{% block title %}Voice Assistant{% endblock title %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Voice Assistant</title>
+  <style>
+    /* Global Styles */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #4a90e2, #50e3c2, #9013fe);
+      background-size: 400% 400%;
+      animation: gradientAnimation 15s ease infinite;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+    }
+
+    @keyframes gradientAnimation {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    /* Full-screen container */
+    .container {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+
+    button {
+      padding: 12px 24px;
+      font-size: 1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 5px;
+      background-color: #fff;
+      color: #333;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #f0f0f0;
+      transform: scale(1.05);
+    }
+
+    p {
+      font-size: 1.2rem;
+      margin: 15px 0;
+      text-align: center;
+    }
+
+    span {
+      font-weight: bold;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2rem;
+      }
+      button {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+      }
+      p {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎙️ Voice to AI Chat</h1>
+    <button id="start-recording">🎤 Start Recording</button>
+    <p><strong>Transcription:</strong> <span id="transcription">---</span></p>
+    <p><strong>AI Response:</strong> <span id="ai-response">---</span></p>
+  </div>
+
+  <script>
+    const startRecordingBtn = document.getElementById('start-recording');
+    const transcriptionOutput = document.getElementById('transcription');
+    const aiResponseOutput = document.getElementById('ai-response');
+
+    let recognition;
+    if ('webkitSpeechRecognition' in window) {
+      recognition = new webkitSpeechRecognition();
+    } else if ('SpeechRecognition' in window) {
+      recognition = new SpeechRecognition();
+    } else {
+      alert('Your browser does not support speech recognition.');
+    }
+
+    if (recognition) {
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      recognition.lang = 'en-US';
+
+      startRecordingBtn.addEventListener('click', () => {
+        transcriptionOutput.textContent = "Listening...";
+        recognition.start();
+      });
+
+      recognition.onresult = async (event) => {
+        const transcript = event.results[0][0].transcript;
+        transcriptionOutput.textContent = transcript;
+
+        // Send transcription to Django backend
+        const response = await fetch("{% url 'process_audio_text' %}", {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+          },
+          body: JSON.stringify({ text: transcript })
+        });
+
+        const data = await response.json();
+        const aiResponse = data.response || "Error: No response received.";
+        aiResponseOutput.textContent = aiResponse;
+
+        // Convert AI response to speech
+        speak(aiResponse);
+      };
+
+      recognition.onerror = (event) => {
+        transcriptionOutput.textContent = "Error capturing audio.";
+        console.error('Speech recognition error:', event.error);
+      };
+    }
+
+    // Function to get CSRF token
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          if (cookie.startsWith(name + '=')) {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+
+    // Function to convert text to speech with a female voice
+    function speak(text) {
+      if (text) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = "en-US"; 
+
+        // Ensure voices are loaded
+        let voices = speechSynthesis.getVoices();
+        if (voices.length === 0) {
+          speechSynthesis.onvoiceschanged = () => {
+            voices = speechSynthesis.getVoices();
+            setVoiceAndSpeak(utterance, voices);
+          };
+        } else {
+          setVoiceAndSpeak(utterance, voices);
+        }
+      }
+    }
+
+    // Function to select a female voice and speak
+    function setVoiceAndSpeak(utterance, voices) {
+      const femaleVoice = voices.find(voice => voice.name.includes("Female") || voice.name.includes("Google US English"));
+      if (femaleVoice) {
+        utterance.voice = femaleVoice;
+      }
+      speechSynthesis.speak(utterance);
+    }
+
+    // Load voices properly (fixes issue where voices may not load on first try)
+    speechSynthesis.onvoiceschanged = () => {
+      speechSynthesis.getVoices();
+    };
+  </script>
+</body>
+</html>
+{% endblock content %}

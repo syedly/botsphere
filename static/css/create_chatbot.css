@@ -1,0 +1,154 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-image: url('../images/pngwing.com (2).png'); 
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.progress-tracker {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    display: flex;
+    justify-content: space-between;
+    z-index: 10;
+}
+
+.progress-tracker::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #ccc;
+    z-index: 0;
+    transform: translateY(-50%);
+}
+
+.progress-step {
+    width: 30px;
+    height: 30px;
+    background: #ccc;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    position: relative;
+    font-size: 14px;
+    color: white;
+}
+
+.progress-step.active {
+    background: #007bff;
+}
+
+.progress-step.completed {
+    background: #28a745;
+}
+
+.form-container {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 80px; /* To avoid overlapping with progress tracker */
+    padding: 20px;
+}
+
+.form-step {
+    display: none;
+    text-align: center;
+    width: 100%;
+    margin-top: 200px;
+}
+
+.form-step.active {
+    display: block;
+}
+
+input, textarea {
+    width: 80%;
+    max-width: 600px;
+    margin: 10px auto;
+    padding: 5px 0;
+    border: none;
+    border-bottom: 2px solid #ccc;
+    background: transparent;
+    font-size: 18px;
+    color: white;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+input::placeholder, textarea::placeholder {
+    color: #ddd;
+}
+
+input:focus, textarea:focus {
+    border-bottom: 2px solid #007bff;
+}
+
+input {
+    caret-color: white;
+}
+
+button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+#custom-file-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+}
+
+#custom-file-button:hover {
+    background-color: #0056b3;
+}
+
+#image-preview {
+    margin-top: 20px;
+    display: none;
+    text-align: center;
+}
+
+#image-preview img {
+    max-width: 300px;
+    max-height: 300px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Hide default file input */
+#image {
+    display: none;
+}

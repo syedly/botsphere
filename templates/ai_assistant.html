@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}AI Assistant{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/ai_assistant.css' %}">
+
+<!-- Chat Container -->
+<div id="chat-container">
+    {% if response %}
+        <div class="full-width-container">
+            <div class="chat-message bot">
+                <p>{{ response|safe }}</p>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+<!-- Fixed Input Bar -->
+<div class="input-bar">
+    <form method="post" id="chat-form" class="input-wrapper">
+        {% csrf_token %}
+        <input type="text" id="prompt-input" name="prompt" placeholder="Enter your prompt..." required />
+        <button type="submit" class="arrow">↑</button>
+    </form>
+</div>
+
+<!-- Include jQuery (or your preferred JS library) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#chat-form').on('submit', function(event) {
+            event.preventDefault();
+            
+            $.ajax({
+                url: '', // The current URL will handle the POST request
+                type: 'POST',
+                data: $(this).serialize(),
+                success: function(response) {
+                    $('#chat-container').append(
+                        '<div class="full-width-container"><div class="chat-message bot"><p>' + response.response + '</p></div></div>'
+                    );
+                    $('#prompt-input').val(''); // Clear the input field
+                    $('#chat-container').scrollTop($('#chat-container')[0].scrollHeight); // Auto-scroll
+                },
+                error: function(xhr, errmsg, err) {
+                    console.error(xhr.status + ": " + xhr.responseText);
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

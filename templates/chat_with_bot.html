@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Chat with {{bot.name}}{% endblock title %}
+
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/chat_with_bot.css' %}">
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const form = document.getElementById("chatForm");
+            const chatBox = document.getElementById("chatBox");
+
+            form.addEventListener("submit", (e) => {
+                e.preventDefault();
+                const formData = new FormData(form);
+                const userMessage = formData.get("prompt");
+
+                // Append user's message to chat
+                const userDiv = document.createElement("div");
+                userDiv.classList.add("message", "user-message");
+                userDiv.textContent = userMessage;
+                chatBox.appendChild(userDiv);
+
+                fetch(form.action, {
+                    method: "POST",
+                    body: formData,
+                    headers: {
+                        "X-Requested-With": "XMLHttpRequest"
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const botDiv = document.createElement("div");
+                    botDiv.classList.add("message", "bot-message");
+                    botDiv.textContent = `{{bot.name}}: ${data.response}`;
+                    chatBox.appendChild(botDiv);
+
+                    // Auto-scroll to the bottom
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                })
+                .catch(error => console.error("Error:", error));
+
+                // Clear input field
+                form.reset();
+            });
+        });
+    </script>
+    <div id="chatBox">
+        <!-- Chat messages will appear here -->
+    </div>
+    <form id="chatForm" method="post" action="{% url 'chat_with_bot' bot.id %}">
+        {% csrf_token %}
+        <textarea name="prompt" placeholder="Type your message here..." required></textarea>
+        <button type="submit"></button>
+    </form>
+{% endblock content %}

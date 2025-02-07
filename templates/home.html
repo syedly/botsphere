@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+<div class="background">
+    <h1>Welcome! {{user.username}}</h1>
+  </div>
+
+  <div class="message" id="dynamicMessage"></div>
+
+<div class="glass-container">
+    <h2>Your Chatbots</h2>
+    {% if bots %}
+        {% for bot in bots %}
+            <div class="profile">
+                <img src="{{ bot.image.url }}" alt="Image of {{ bot.name }}" />
+                <p>{{ bot.name }}</p>
+                <form method="POST" action="{% url 'delete-chat-bot' bot.pk %}">
+                    {% csrf_token %}
+                    <button type="submit" class="delete-btn">Delete</button>
+                </form>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No chatbots available. Create one to get started!</p>
+    {% endif %}
+</div>
+<script>
+    const messages = [
+      "Hi {{user.username}}, how can we help you?",
+      "Welcome to our website!",
+      "Feel free to explore our services.",
+      "Have a question? Let us know!",
+      "We're here to assist you anytime."
+    ];
+
+    let index = 0;
+    let letterIndex = 0;
+    let currentMessage = '';
+    let isDeleting = false;
+
+    function updateMessage() {
+      const messageElement = document.getElementById("dynamicMessage");
+      if (!isDeleting) {
+        // Add one letter at a time
+        currentMessage = messages[index].slice(0, letterIndex + 1);
+        letterIndex++;
+        messageElement.textContent = currentMessage;
+
+        if (letterIndex === messages[index].length) {
+          // Wait before starting to delete
+          isDeleting = true;
+          setTimeout(updateMessage, 1000);
+        } else {
+          setTimeout(updateMessage, 100);
+        }
+      } else {
+        // Remove one letter at a time
+        currentMessage = messages[index].slice(0, letterIndex - 1);
+        letterIndex--;
+        messageElement.textContent = currentMessage;
+
+        if (letterIndex === 0) {
+          // Move to the next message
+          isDeleting = false;
+          index = (index + 1) % messages.length;
+          setTimeout(updateMessage, 500);
+        } else {
+          setTimeout(updateMessage, 50);
+        }
+      }
+    }
+
+    // Start the typing effect
+    updateMessage();
+  </script>
+{% endblock %}

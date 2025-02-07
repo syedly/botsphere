@@ -1,0 +1,66 @@
+<!-- chat_with_hassan.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Chat with Echo{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/chatbot.css' %}">
+  <!-- Flying Robot Structure -->
+  <div class="robot">
+    <div class="head">
+      <div class="face">
+        <div class="eyes">
+          <div class="eye left"></div>
+          <div class="eye right"></div>
+        </div>
+      </div>
+    </div>
+    <div class="body"></div>
+    <div class="arms">
+      <div class="arm left"></div>
+      <div class="arm right"></div>
+    </div>
+  </div>
+
+  <!-- Chat Section -->
+  <div id="chat-container" class="chat-container">
+    {% if response %}
+      <div class="chat-message">
+        <p>{{ response }}</p>
+      </div>
+    {% endif %}
+  </div>
+
+  <form method="post" id="chat-form" class="input-bar">
+    {% csrf_token %}
+    <input type="text" id="prompt" name="prompt" class="input-bar__input" placeholder="Enter your message" required>
+    <button type="submit">Submit</button>
+</form>
+
+
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $('#chat-form').on('submit', function(event) {
+        event.preventDefault();
+
+        $.ajax({
+          url: '', // The current URL will handle the POST request
+          type: 'POST',
+          data: $(this).serialize(),
+          success: function(response) {
+            $('#chat-container').append(
+              '<div class="chat-message"><p>' + response.response + '</p></div>'
+            );
+            $('#prompt').val(''); // Clear the input field
+          },
+          error: function(xhr, errmsg, err) {
+            console.error(xhr.status + ": " + xhr.responseText);
+          }
+        });
+      });
+    });
+  </script>
+  {% endblock %}

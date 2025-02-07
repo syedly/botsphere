@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+    All Bots
+{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/show_all_bots.css' %}">
+    <div class="slider-container">
+        <button class="arrow left" onclick="moveLeft()">&#8592;</button>
+        <div class="card-slider" id="cardSlider">
+            {% for bot in bots %}
+                <div class="card">
+                    <img src="{{ bot.image.url }}" alt="{{ bot.name }}">
+                    <h3>{{ bot.name }}</h3>
+                    <p>{{ bot.description }}</p>
+                    <a href="{% url 'chat_with_bot' bot.id %}" class="chat-button">Chat with {{ bot.name }}</a>
+                </div>
+            {% empty %}
+                <div class="card">
+                    <h3>No Chatbots Available</h3>
+                    <p>Currently, there are no chatbots to display. Please check back later.</p>
+                </div>
+            {% endfor %}
+        </div>
+        <button class="arrow right" onclick="moveRight()">&#8594;</button>
+    </div>
+
+    <script>
+        let position = 0;
+        const slider = document.getElementById('cardSlider');
+        const cardWidth = document.querySelector('.card').offsetWidth + 20;
+
+        function moveLeft() {
+            if (position < 0) {
+                position += cardWidth;
+                slider.style.transform = `translateX(${position}px)`;
+            }
+        }
+
+        function moveRight() {
+            if (position > -(cardWidth * (slider.children.length - 1))) {
+                position -= cardWidth;
+                slider.style.transform = `translateX(${position}px)`;
+            }
+        }
+    </script>
+{% endblock %}

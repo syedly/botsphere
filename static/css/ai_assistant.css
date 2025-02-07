@@ -1,0 +1,111 @@
+/* Overall body styles */
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #2d2d2d;
+    background-image: url('../images/pngwing.com (1).png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+/* Chat container with vertical scrollbar */
+#chat-container {
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Full-width container to hold bot responses with horizontal scroll if needed */
+.full-width-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+/* Fixed input bar at the bottom */
+.input-bar {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    padding: 10px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+}
+
+/* Input and button wrapper */
+.input-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+}
+
+/* Input field styles */
+.input-bar input {
+    width: 100%;
+    padding: 10px 50px 10px 15px;
+    border: 1px solid #ffffff;
+    border-radius: 20px;
+    background-color: transparent;
+    color: white;
+    font-size: 16px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+/* Placeholder text color */
+.input-bar input::placeholder {
+    color: #cccccc;
+}
+
+/* Arrow button styles */
+.input-bar button.arrow {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    color: white;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+/* Chat message styles */
+.chat-message {
+    margin: 10px 0;
+    padding: 15px;
+    border-radius: 10px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Bot message background color */
+.chat-message.bot {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Styling for code blocks within chat messages */
+.chat-message pre {
+    padding: 1em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow-x: auto;
+}
+
+/* Inline code styling */
+.chat-message code {
+    font-family: 'Courier New', Courier, monospace;
+    background-color: transparent;
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+}

@@ -1,0 +1,64 @@
+{% load socialaccount %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Page</title>
+  <link rel="stylesheet" href="{% static 'css/login.css' %}">
+
+</head>
+<body>
+  <div class="container">
+    <!-- Left Section with Gradient Lines -->
+    <div class="left-section">
+      <h1>BotSphere</h1>
+      <h3>Welcome to BotSphere – Where AI Conversations Come to Life!</h3>
+    </div>
+
+    <!-- Right Section with Fixed Login Form -->
+    <div class="right-section">
+      <div class="form-card">
+        <div class="logo">
+            <img src="{% static 'images/pngwing.com.png' %}" alt="BotSphere Logo">
+        </div>
+
+        <!-- Display Form Errors -->
+        {% if form.errors %}
+          <p style="color: red;">{{ form.errors.as_text }}</p>
+        {% endif %}
+
+        <!-- Login Form -->
+        <form method="POST">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="username">Username</label>
+            {{ form.username }}
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            {{ form.password }}
+          </div>
+          <button type="submit" class="submit-btn">Login</button>
+        </form>
+
+        <!-- Signup Link -->
+        <p class="signup-text">
+          Don't have an account? <a href="{% url 'register' %}" class="signup-link">Signup</a>
+        </p>
+
+        <!-- OR Divider -->
+        <div class="divider">
+          <span>--------------------------   or   --------------------------</span>
+        </div>
+
+        <!-- Google Login Button -->
+        <div class="google-login">
+          <a href="{% provider_login_url 'google' %}?process=login" class="google-btn">Login with Google</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

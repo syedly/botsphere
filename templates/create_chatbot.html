@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+    Customise ChatBot
+{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/create_chatbot.css' %}">
+    <div class="progress-tracker">
+        <div class="progress-step active" id="progress-step-1">1</div>
+        <div class="progress-step" id="progress-step-2">2</div>
+        <div class="progress-step" id="progress-step-3">3</div>
+        <div class="progress-step" id="progress-step-4">4</div>
+    </div>
+
+    <div class="form-container">
+        <form id="chatbot-form" action="{% url 'create_chatbot' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <!-- Step 1 -->
+            <div class="form-step active" id="step-1">
+                {{ form.name }}
+                <button type="button" onclick="nextStep(1)">Next</button>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="form-step" id="step-2">
+                {{ form.description }}
+                <button type="button" onclick="nextStep(2)">Next</button>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="form-step" id="step-3">
+                <button type="button" id="custom-file-button" onclick="document.getElementById('id_image').click()">Choose File</button>
+                {{ form.image }}
+                <div id="image-preview" style="display:none;">
+                    <p>Image Preview:</p>
+                    <img id="preview" alt="Uploaded Image Preview">
+                </div>
+                <button type="button" onclick="nextStep(3)">Next</button>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="form-step" id="step-4">
+                <button type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function nextStep(currentStep) {
+            document.getElementById(`step-${currentStep}`).classList.remove('active');
+            document.getElementById(`progress-step-${currentStep}`).classList.add('completed');
+            const nextStep = currentStep + 1;
+            document.getElementById(`step-${nextStep}`).classList.add('active');
+            document.getElementById(`progress-step-${nextStep}`).classList.add('active');
+        }
+
+        function previewImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('preview');
+                    preview.src = e.target.result;
+                    document.getElementById('image-preview').style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        document.getElementById('id_image').addEventListener('change', previewImage);
+    </script>
+</body>
+</html>
+{% endblock %}
+{% comment %} <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Chatbot</title>
+</head>
+<body>
+    <h1>Create a New Chatbot</h1>
+    <form action="{% url 'create_chatbot' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        {% if form.errors %}
+            <ul>
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <button type="submit">Create Chatbot</button>
+    </form>
+</body>
+</html> {% endcomment %}

@@ -1,0 +1,121 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-image: url('../images/pngwing.com (2).png'); 
+    background-color: #2d2d2d;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 200vh;
+  }
+  
+  .background {
+    padding: 20px;
+    color: white;
+    line-height: 1.6;
+  }
+  
+  .glass-container {
+    position: fixed;
+    top: 80%;
+    right: 20px;
+    transform: translateY(-50%);
+    width: 320px;
+    height: 420px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+    padding: 20px;
+    color: #000;
+    overflow-y: scroll;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+  }
+  
+  .glass-container h2 {
+    margin: 0 0 10px;
+    font-size: 1.5rem;
+    color: #333;
+  }
+  
+  .profile {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+  }
+  
+  .profile img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  .profile p {
+    font-size: 1rem;
+    color: #333;
+    margin: 0;
+    flex: 1;
+  }
+  
+  .delete-btn {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s;
+  }
+  
+  .delete-btn:hover {
+    background-color: #ff1a1a;
+  }
+  
+  /* Scrollbar styles */
+  .glass-container::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .glass-container::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+  }
+  
+  .glass-container::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+  }
+  
+  .glass-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+  }
+  
+  .message {
+    font-size: 1.5rem;
+    color: white;
+    margin: 20px 0;
+    animation: fadeIn 2s ease-in-out;
+    text-align: center;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  .background {
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 0px;
+    text-align: center;
+    z-index: 10;
+  }
+  
+  .background h1 {
+    font-size: 3em;
+    margin: 0;
+  }

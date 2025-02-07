@@ -1,0 +1,92 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  display: flex;
+}
+
+.sidebar {
+  width: 250px;
+  height: 100vh;
+  background-color: #111;
+  color: white;
+  position: fixed;
+  left: -250px; /* Initially hidden */
+  top: 0;
+  transition: left 0.3s;
+  overflow: auto;
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Space out links and logout button */
+  z-index: 1000;
+}
+
+.sidebar a {
+  padding: 10px 20px;
+  text-decoration: none;
+  color: white;
+  display: block;
+  transition: background-color 0.3s;
+}
+
+.sidebar a:hover {
+  background-color: #575757;
+}
+
+.sidebar .close-btn {
+  font-size: 24px;
+  text-align: right;
+  margin-right: 20px;
+  cursor: pointer;
+}
+
+.logout-form {
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.logout-btn {
+  background-color: #f44336; /* Red color */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  width: 100%;
+}
+
+.logout-btn:hover {
+  background-color: #d32f2f; /* Darker red */
+}
+
+.main-content {
+  margin-left: 0;
+  padding: 20px;
+  flex: 1;
+}
+
+.open-btn {
+  background-color: transparent;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  position: fixed; /* Make the button fixed */
+  top: 10px; /* Adjust position from the top */
+  left: 10px; /* Adjust position from the left */
+  z-index: 1000; /* Ensure it stays on top of other elements */
+}
+
+
+@media screen and (max-width: 768px) {
+  .open-btn {
+    top: 5px;
+    left: 5px;
+    font-size: 14px; /* Adjust size for smaller screens */
+  }
+}
+
